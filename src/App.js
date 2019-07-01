@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import './App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// api
+import API_KEY from "./utils/api.js";
+// on src/utils/api.js
+// export default "<your_api>";
+
+// components
+import Header from "./components/Header/Header";
+import NewsList from "./components/News/NewsList/NewsList";
+import Search from './components/Search/Search';
+
+class App extends Component {
+    state = {
+        news: [],
+    };
+
+    componentDidMount() {
+        this.fetchNews();
+    }
+
+    fetchNews = async (category = "general", country = "us") => {
+        const res = await fetch(`https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API_KEY}`);
+        const data = await res.json();
+        this.setState({ news: data.articles });
+    }
+
+    render() {
+        const { news } = this.state;
+
+        return (
+            <>
+                <Header />
+                <Search fetchNews={this.fetchNews} />
+                <div className="container white news-container">
+                    <NewsList news={news} />
+                </div>
+            </>
+        );
+    }
 }
 
 export default App;
