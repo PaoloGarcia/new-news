@@ -3,8 +3,9 @@ import './App.scss';
 
 // api
 import API_KEY from "./utils/api.js";
-// on src/utils/api.js
-// export default "<your_api>";
+// create folder "utils" inside src and a file "api.js" inside utils
+// on the api.js file, write the following code (you must use your own api key)
+// export default "<your_api_key>";
 
 // components
 import Header from "./components/Header/Header";
