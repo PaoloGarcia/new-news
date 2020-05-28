@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NewsItem = ({ item }) => {
+function NewsItem({ item }) {
     const { description, source: { name }, title, url, urlToImage } = item;
 
     // check if there is image
@@ -36,7 +36,7 @@ const NewsItem = ({ item }) => {
             </div>
         </div>
     );
-};
+}
 
 NewsItem.propTypes = {
     item: PropTypes.object.isRequired,

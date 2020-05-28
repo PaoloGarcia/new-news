@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // components
 import NewsItem from "../NewsItem/NewsItem";
 
-const NewsList = ({ news }) => {
+function NewsList({ news }) {
     if (news.length === 0) {
         return <h2>Loading...</h2>
     }
@@ -20,7 +20,7 @@ const NewsList = ({ news }) => {
             {newsList}
         </div>
     );
-};
+}
 
 NewsList.propTypes = {
     news: PropTypes.arrayOf(PropTypes.object).isRequired,
