@@ -1,45 +1,41 @@
-import React, { Component } from 'react';
-import './App.scss';
-
-// api
-import API_KEY from "./utils/api.js";
-// create folder "utils" inside src and a file "api.js" inside utils
-// on the api.js file, write the following code (you must use your own api key)
-// export default "<your_api_key>";
-
-// components
+import React from 'react';
 import Header from "./components/Header/Header";
 import NewsList from "./components/News/NewsList/NewsList";
 import Search from './components/Search/Search';
+import { useFetch } from './hooks/useFetch';
+import { createUrl } from './utils';
+import './App.css';
 
-class App extends Component {
-    state = {
-        news: [],
-    };
+function App() {
+    const { data, error, loading, refetch } = useFetch(createUrl("general", "us"));
 
-    componentDidMount() {
-        this.fetchNews();
-    }
-
-    fetchNews = async (category = "general", country = "us") => {
-        const res = await fetch(`https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API_KEY}`);
-        const data = await res.json();
-        this.setState({ news: data.articles });
-    }
-
-    render() {
-        const { news } = this.state;
-
+    if (loading) {
         return (
-            <>
-                <Header />
-                <Search fetchNews={this.fetchNews} />
-                <div className="container white news-container">
-                    <NewsList news={news} />
-                </div>
-            </>
+            <div className="container white news-container">
+               <h2>Loading...</h2>
+            </div>
         );
     }
+
+    if (error) {
+        return (
+            <div className="container white news-container">
+               <h2>Error: {error}</h2>
+            </div>
+        );
+    }
+
+    return (
+        <>
+            <Header />
+            <Search fetchNews={refetch} />
+            <div className="container white news-container">
+                <NewsList
+                    news={data?.articles?.filter((article) => article.url !== "https://removed.com")}
+                />
+            </div>
+        </>
+    );
 }
 
 export default App;

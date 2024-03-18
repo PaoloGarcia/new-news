@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function NewsItem({ item }) {
+const replacesRemoved = (field) => field === "[Removed]" ? null : field;
+
+function NewsItem({ item = {} }) {
     const { description, source: { name }, title, url, urlToImage } = item;
 
     // check if there is image
@@ -19,8 +20,8 @@ function NewsItem({ item }) {
                 {image}
 
                 <div className="card-content">
-                    <h3>{title}</h3>
-                    <p>{description}</p>
+                    <h3>{replacesRemoved(title)}</h3>
+                    <p>{replacesRemoved(description)}</p>
                 </div>
 
                 <div className="card-action">
@@ -37,9 +38,5 @@ function NewsItem({ item }) {
         </div>
     );
 }
-
-NewsItem.propTypes = {
-    item: PropTypes.object.isRequired,
-};
 
 export default NewsItem;
